@@ -51,7 +51,7 @@ def get_monitors_resolution(dpi_awareness=2):
         allmoni[i] = {"width": res[0], "height": res[1]}
     moninfos = {
         'width_all_monitors': sum([q[1]["width"] for q in allmoni.items()]),
-        'height_all_monitors': max([q[1]["height"] for q in allmoni.items()]),
+        'height_all_monitors': sum([q[1]["height"] for q in allmoni.items()]),
         'max_monitor_width': max([q[1]["width"] for q in allmoni.items()]),
         'min_monitor_width': min([q[1]["width"] for q in allmoni.items()]),
         'max_monitor_height': max([q[1]["height"] for q in allmoni.items()]),
