@@ -1,7 +1,22 @@
-import ctypes
-from ctypes import wintypes
-windll = ctypes.LibraryLoader(ctypes.WinDLL)
-user32 = windll.user32
+# Uses ctypes to get the resolution information of all available monitors
+
+## pip install getmonitorresolution
+
+#### Tested against Windows 10 / Python 3.10 / Anaconda
+
+```python
+The get_monitors_resolution() function retrieves the resolution information of all available monitors on a Windows machine. It takes an optional parameter dpi_awareness, which sets the DPI awareness level. The function returns a tuple containing two dictionaries, allmoni and moninfos.
+
+allmoni is a dictionary containing the resolution details of all available monitors, with the monitor index as the key. The values of the dictionary are also dictionaries containing the width and height of each monitor.
+
+moninfos is a dictionary containing the following resolution information of all the available monitors:
+
+width_all_monitors: The combined width of all the monitors.
+height_all_monitors: The maximum height among all the monitors.
+max_monitor_width: The maximum width of all the monitors.
+min_monitor_width: The minimum width of all the monitors.
+max_monitor_height: The maximum height of all the monitors.
+min_monitor_height: The minimum height of all the monitors.
 
 
 def get_monitors_resolution(dpi_awareness=2):
@@ -21,43 +36,16 @@ def get_monitors_resolution(dpi_awareness=2):
             * min_monitor_width (int): The minimum width of all the monitors.
             * max_monitor_height (int): The maximum height of all the monitors.
             * min_monitor_height (int): The minimum height of all the monitors.
-    """
-    windll.shcore.SetProcessDpiAwareness(dpi_awareness)
-    def _get_monitors_resolution():
-        monitors = []
-        monitor_enum_proc = ctypes.WINFUNCTYPE(
-            ctypes.c_int,
-            ctypes.c_ulong,
-            ctypes.c_ulong,
-            ctypes.POINTER(ctypes.wintypes.RECT),
-            ctypes.c_double,
-        )
+			
+			
 
-        def callback(hMonitor, hdcMonitor, lprcMonitor, dwData):
-            monitors.append(
-                (
-                    lprcMonitor.contents.right - lprcMonitor.contents.left,
-                    lprcMonitor.contents.bottom - lprcMonitor.contents.top,
-                )
-            )
-            return 1
+from getmonitorresolution import get_monitors_resolution
+eachmonitor,general = get_monitors_resolution()
+print(eachmonitor)
+print(general)
 
-        user32.EnumDisplayMonitors(None, None, monitor_enum_proc(callback), 0)
-        return monitors
+# output 
+{0: {'width': 1920, 'height': 1080}, 1: {'width': 1920, 'height': 1080}}
+{'width_all_monitors': 3840, 'height_all_monitors': 1920, 'max_monitor_width': 1920, 'min_monitor_width': 1920, 'max_monitor_height': 1080, 'min_monitor_height': 1080}
 
-    resolutions = _get_monitors_resolution()
-    allmoni = {}
-    for i, res in enumerate(resolutions):
-        allmoni[i] = {"width": res[0], "height": res[1]}
-    moninfos = {
-        'width_all_monitors': sum([q[1]["width"] for q in allmoni.items()]),
-        'height_all_monitors': sum([q[1]["height"] for q in allmoni.items()]),
-        'max_monitor_width': max([q[1]["width"] for q in allmoni.items()]),
-        'min_monitor_width': min([q[1]["width"] for q in allmoni.items()]),
-        'max_monitor_height': max([q[1]["height"] for q in allmoni.items()]),
-        'min_monitor_height': min([q[1]["height"] for q in allmoni.items()]),
-
-    }
-    return allmoni, moninfos
-
-
+```
