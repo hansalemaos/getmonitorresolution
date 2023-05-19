@@ -1,4 +1,4 @@
-# Uses ctypes to get the resolution information of all available monitors
+# Uses ctypes to get the resolution and other useful information of all available monitors
 
 ## pip install getmonitorresolution
 
@@ -45,7 +45,39 @@ print(eachmonitor)
 print(general)
 
 # output 
-{0: {'width': 1920, 'height': 1080}, 1: {'width': 1920, 'height': 1080}}
-{'width_all_monitors': 3840, 'height_all_monitors': 1920, 'max_monitor_width': 1920, 'min_monitor_width': 1920, 'max_monitor_height': 1080, 'min_monitor_height': 1080}
+eachmonitor,general = get_monitors_resolution()
+from pprint import pprint
+pprint(eachmonitor)
+{0: {'DeviceID': 'PCI\\VEN_10DE&DEV_1F06&Sxxxxxxxxxxxxxxxxx&REV_A1',
+     'DeviceKey': '\\Registry\\Machine\\System\\CurrentControlSet\\Control\\Video\\{xxxxxxxxxxxxxx}\\0000',
+     'DeviceName': '\\\\.\\DISPLAY1',
+     'DeviceString': 'NVIDIA GeForce RTX 2060 SUPER',
+     'StateFlags': 5,
+     'height': 1080,
+     'height_mm': 299,
+     'is_primary': True,
+     'width': 1920,
+     'width_mm': 531,
+     'x': 0,
+     'y': 0},
+ 1: {'DeviceID': 'PCI\\VEN_10DE&xxxxxxxx&xxxxxxxxxxxxx&REV_A1',
+     'DeviceKey': '\\Registry\\Machine\\System\\CurrentControlSet\\Control\\Video\\{xxxxxxxxxxxx}\\0001',
+     'DeviceName': '\\\\.\\DISPLAY2',
+     'DeviceString': 'NVIDIA GeForce RTX 2060 SUPER',
+     'StateFlags': 1,
+     'height': 1080,
+     'height_mm': 299,
+     'is_primary': False,
+     'width': 1920,
+     'width_mm': 531,
+     'x': 1920,
+     'y': 0}}
+pprint(general)
+{'height_all_monitors': 2160,
+ 'max_monitor_height': 1080,
+ 'max_monitor_width': 1920,
+ 'min_monitor_height': 1080,
+ 'min_monitor_width': 1920,
+ 'width_all_monitors': 3840}
 
 ```
